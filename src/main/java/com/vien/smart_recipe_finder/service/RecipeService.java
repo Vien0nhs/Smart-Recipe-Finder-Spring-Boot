@@ -23,7 +23,6 @@ public class RecipeService {
     @Autowired
     private ModelMapper modelMapper;
 
-    // Lấy tất cả công thức
     public Page<RecipeDTO> getAllRecipes(int index, int page) {
         Pageable pageable = PageRequest.of(index, page);
         Page<Recipes> recipesPage = recipeRepository.findAll(pageable);
@@ -35,7 +34,6 @@ public class RecipeService {
         return modelMapper.map(recipes, RecipeDTO.class);
 
     }
-    // Tìm công thức chứa tất cả nguyên liệu
     public Page<RecipeDTO> findRecipesByIngredientsLikePaged(
             List<String> ingredientNames,
             int page,
@@ -45,7 +43,6 @@ public class RecipeService {
             return Page.empty();
         }
 
-        // Tìm tất cả công thức chứa ít nhất 1 nguyên liệu
         Pageable pageable = PageRequest.of(page, size);
         Set<Long> recipeIds = new HashSet<>();
 
@@ -56,7 +53,6 @@ public class RecipeService {
             }
         }
 
-        // Lấy danh sách công thức theo ID đã tìm được và phân trang
         if (recipeIds.isEmpty()) {
             return Page.empty();
         }
@@ -65,7 +61,6 @@ public class RecipeService {
         return recipesPage.map(recipe -> modelMapper.map(recipe, RecipeDTO.class));
     }
 
-    // Tìm theo title chính xác
     public Page<RecipeDTO> findRecipesByTitleLike(String title, int page, int size) {
         if (title == null || title.trim().isEmpty()) {
             return new PageImpl<>(Collections.emptyList(), PageRequest.of(page, size), 0);
@@ -75,13 +70,11 @@ public class RecipeService {
         return recipesPage.map(recipe -> modelMapper.map(recipe, RecipeDTO.class));
     }
 
-    // Tìm theo cooking_time
     public Page<RecipeDTO> findRecipesByCookingTime(int cookingTime, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Recipes> recipesPage = recipeRepository.findByCookingTimeLessThanOrEqual(cookingTime, pageable);
         return recipesPage.map(recipe -> modelMapper.map(recipe, RecipeDTO.class));
     }
-    // Lọc theo loại công thức
     public Page<RecipeDTO> findRecipesByType(RecipeType recipeType, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Recipes> recipesPage = recipeRepository.findByRecipeType(recipeType, pageable);

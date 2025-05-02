@@ -22,21 +22,17 @@ public interface RecipeRepository extends JpaRepository<Recipes, Long> {
             @Param("ingredientName") String ingredientName,
             Pageable pageable
     );
-    // Tìm theo title
-    // Tìm theo title bắt đầu bằng chuỗi
     @Query("SELECT r FROM Recipes r WHERE LOWER(r.title) LIKE LOWER(CONCAT('%', :title, '%'))")
     Page<Recipes> findByTitleExact(
             @Param("title") String title,
             Pageable pageable
     );
-    // Tìm theo cooking_time
     @Query("SELECT r FROM Recipes r " +
             "WHERE r.cookingTime = :cookingTime")
     Page<Recipes> findByCookingTimeLessThanOrEqual(
             @Param("cookingTime") int cookingTime,
             Pageable pageable
     );
-    // Tìm theo loại công thức
     @Query("SELECT r FROM Recipes r WHERE (:recipeType IS NULL OR r.recipeType = :recipeType)")
     Page<Recipes> findByRecipeType(
             @Param("recipeType") RecipeType recipeType,

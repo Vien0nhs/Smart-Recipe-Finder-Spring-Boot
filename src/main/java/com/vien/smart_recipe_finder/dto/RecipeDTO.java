@@ -14,9 +14,9 @@ public class RecipeDTO {
     private String instructions;
     private String image;
     private RecipeType recipeType;
-    private int cookingTime; // Thêm field cookingTime
+    private int cookingTime;
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private Date createdAt; // Giữ nguyên định dạng timestamp
+    private Date createdAt;
     private List<RecipeIngredientDTO> ingredients;
     private List<RecipeSpiceDTO> spices;
 }

@@ -15,6 +15,6 @@ public class Spices {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false, unique = true) // Tên gia vị không null và duy nhất
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 }

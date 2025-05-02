@@ -20,13 +20,13 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
     @Column(name = "full_name")
-    private String fullName;  // Đổi từ name → fullName để khớp DB
+    private String fullName;
     private String avatar_url;
     @Column(nullable = false)
-    private String provider; // google, facebook, github
+    private String provider;
     @Column(name = "provider_id", nullable = false, unique = true)
-    private String providerId;  // Đổi từ googleId → providerId
-    @Column(name = "created_at", updatable = false) // Không cho update created_at
+    private String providerId;
+    @Column(name = "created_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
     @Column(nullable = false)

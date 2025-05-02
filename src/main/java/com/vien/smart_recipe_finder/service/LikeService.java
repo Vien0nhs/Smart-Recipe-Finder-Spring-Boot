@@ -26,7 +26,6 @@ public class LikeService {
     public void likePost(Long postId) {
         logger.info("Liking post ID: {}", postId);
         try {
-            // Kiểm tra trạng thái xác thực
             boolean isAuthenticated = SecurityContextHolder.getContext().getAuthentication() != null &&
                     SecurityContextHolder.getContext().getAuthentication().isAuthenticated() &&
                     !SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser");
@@ -54,7 +53,6 @@ public class LikeService {
             likeRepository.save(like);
             logger.info("Successfully liked post ID: {} by user ID: {}", postId, user.getId());
 
-            // Tạo thông báo cho chủ bài đăng
             if (!user.getId().equals(post.getUser().getId())) {
                 notificationService.createNotification(
                         postId,
@@ -73,7 +71,6 @@ public class LikeService {
     public void unlikePost(Long postId) {
         logger.info("Unliking post ID: {}", postId);
         try {
-            // Kiểm tra trạng thái xác thực
             boolean isAuthenticated = SecurityContextHolder.getContext().getAuthentication() != null &&
                     SecurityContextHolder.getContext().getAuthentication().isAuthenticated() &&
                     !SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser");

@@ -48,7 +48,6 @@ public class RatingService {
         rating.setUser(user);
         rating.setRecipe(recipe);
         rating.setRating(ratingDTO.getRating());
-        // Chỉ cập nhật comment nếu ratingDTO.getComment() không rỗng và không null
         if (ratingDTO.getComment() != null && !ratingDTO.getComment().isEmpty()) {
             rating.setComment(ratingDTO.getComment());
         }
@@ -84,7 +83,6 @@ public class RatingService {
 
         User commentOwner = rating.getUser();
 
-        // Lấy người đang đăng nhập
         org.springframework.security.core.Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
 
@@ -93,7 +91,6 @@ public class RatingService {
 
         boolean isAdmin = "ROLE_ADMIN".equals(currentUser.getRole());
 
-        // Nếu là admin hoặc chính chủ thì mới được xóa
         if (isAdmin || Objects.equals(commentOwner.getId(), currentUser.getId())) {
             ratingRepository.delete(rating);
         } else {

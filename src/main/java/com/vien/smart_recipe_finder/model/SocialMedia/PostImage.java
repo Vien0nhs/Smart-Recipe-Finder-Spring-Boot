@@ -18,6 +18,6 @@ public class PostImage {
     private Post post;
 
     @Column(name = "image_data", nullable = false)
-    private byte[] imageData; // Lưu ảnh dưới dạng byte
+    private byte[] imageData;
 }
 

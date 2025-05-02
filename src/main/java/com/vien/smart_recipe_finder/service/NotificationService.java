@@ -46,7 +46,8 @@ public class NotificationService {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        return notificationRepository.findByUserId(user.getId(), PageRequest.of(page, size, Sort.by("createdAt").descending()))
+        return notificationRepository
+                .findByUserId(user.getId(), PageRequest.of(page, size, Sort.by("createdAt").descending()))
                 .map(this::toDTO);
     }
 
@@ -54,7 +55,8 @@ public class NotificationService {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        return notificationRepository.findByUserIdAndIsReadFalse(user.getId(), PageRequest.of(page, size, Sort.by("createdAt").descending()))
+        return notificationRepository
+                .findByUserIdAndIsReadFalse(user.getId(), PageRequest.of(page, size, Sort.by("createdAt").descending()))
                 .map(this::toDTO);
     }
 

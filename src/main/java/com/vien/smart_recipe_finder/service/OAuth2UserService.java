@@ -38,18 +38,15 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
 
             logger.info("Processing OAuth2 user: providerId={}, email={}", providerId, email);
 
-            // Tìm user bằng providerId hoặc email
             Optional<User> existingUser = userRepository.findByProviderId(providerId);
             User user;
             if (existingUser.isPresent()) {
                 user = existingUser.get();
-                // Cập nhật thông tin nếu cần
                 user.setEmail(email);
                 user.setFullName(fullName);
                 user.setAvatar_url(avatar);
                 user.setRole(user.getRole() != null ? user.getRole() : "ROLE_USER");
             } else {
-                // Nếu không tìm thấy bằng providerId, kiểm tra email
                 existingUser = userRepository.findByEmail(email);
                 if (existingUser.isPresent()) {
                     user = existingUser.get();
@@ -65,12 +62,10 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
             userRepository.save(user);
             logger.info("Saved user: id={}, email={}, providerId={}", user.getId(), user.getEmail(), user.getProviderId());
 
-            // Thêm role vào authorities
             List<GrantedAuthority> authorities = new ArrayList<>(oAuth2User.getAuthorities());
             authorities.add(new SimpleGrantedAuthority(user.getRole()));
             logger.info("Authorities: {}", authorities);
 
-            // Sử dụng email làm nameAttributeKey thay vì sub
             return new DefaultOAuth2User(authorities, oAuth2User.getAttributes(), "email");
         } catch (OAuth2AuthenticationException e) {
             logger.error("Error processing OAuth2 user: {}", e.getMessage(), e);

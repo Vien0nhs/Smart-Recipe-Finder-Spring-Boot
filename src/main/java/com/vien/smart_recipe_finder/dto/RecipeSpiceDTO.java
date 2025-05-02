@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class RecipeSpiceDTO {
-    private Long spiceId;    // Lấy từ Spices.id
-    private String name;     // Lấy từ Spices.name
-    private String quantity; // Từ RecipeSpices.quantity
+    private Long spiceId;
+    private String name;
+    private String quantity;
 }

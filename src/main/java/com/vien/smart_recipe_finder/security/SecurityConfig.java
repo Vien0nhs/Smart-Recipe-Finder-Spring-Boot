@@ -47,7 +47,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/recipes/{id}").authenticated()
                         .requestMatchers("/api/ratings/**").authenticated()
                         .requestMatchers("/api/history/**").authenticated()
-                        .requestMatchers("/images/**").permitAll()       // Public ảnh
+                        .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/users/me").authenticated()
                         .requestMatchers("/users/").hasRole("ADMIN")
                         .requestMatchers("/users/{email}").hasRole("ADMIN")
@@ -83,7 +83,7 @@ public class SecurityConfig {
                 .build();
     }
     @Bean
-    @Order(Ordered.HIGHEST_PRECEDENCE) // Đảm bảo CorsFilter được áp dụng trước các filter khác
+    @Order(Ordered.HIGHEST_PRECEDENCE)
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();

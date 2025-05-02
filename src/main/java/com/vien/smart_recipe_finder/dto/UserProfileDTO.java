@@ -9,5 +9,5 @@ public class UserProfileDTO {
     private String email;
     private String avatarUrl;
     private long postCount;
-    private long likeCount; // Tổng lượt like trên bài của user
+    private long likeCount;
 }

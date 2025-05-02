@@ -16,12 +16,12 @@ public class RecipeSpices {
 
     @ManyToOne
     @MapsId("recipeId")
-    @JoinColumn(name = "recipe_id", nullable = false) // Khóa ngoại tới Recipes
+    @JoinColumn(name = "recipe_id", nullable = false)
     private Recipes recipe;
 
     @ManyToOne
     @MapsId("spiceId")
-    @JoinColumn(name = "spice_id", nullable = false) // Khóa ngoại tới Spices
+    @JoinColumn(name = "spice_id", nullable = false)
     private Spices spice;
 
     @Column(name = "quantity")

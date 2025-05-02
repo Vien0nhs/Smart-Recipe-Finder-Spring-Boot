@@ -15,7 +15,7 @@ public class Ingredients {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "type", nullable = false)
-    @Enumerated(EnumType.STRING) // Lưu giá trị enum dưới dạng chuỗi (VD: "VEGETABLE")
+    @Enumerated(EnumType.STRING)
     private IngredientType type;
     @Column(name = "name", nullable = false, unique = true)
     private String name;

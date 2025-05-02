@@ -285,7 +285,6 @@ public class PostService {
                 .anyMatch(u -> u.getEmail().equals(email) && Objects.equals(u.getRole(), "ROLE_ADMIN"));
 
         if (isAdmin && !postOwner.getId().equals(currentUser.getId())) {
-            // Admin xóa bài, tạo thông báo cho chủ bài
             notificationService.createNotification(
                     postId,
                     NotificationType.POST_DELETED,

@@ -22,7 +22,7 @@ public class RatingController {
     private OAuth2UserService oAuth2UserService;
     @PostMapping("/init")
     public ResponseEntity<Void> initXsrfToken() {
-        return ResponseEntity.ok().build(); // Không làm gì, chỉ để Spring yêu cầu có CSRF
+        return ResponseEntity.ok().build();
     }
     @PostMapping("/{recipeId}")
     public ResponseEntity<RatingDTO> createOrUpdateRating(
@@ -30,12 +30,12 @@ public class RatingController {
             @RequestBody RatingDTO ratingDTO,
             @AuthenticationPrincipal OAuth2User oAuth2User) {
         if (oAuth2User == null) {
-            return ResponseEntity.status(403).body(null); // Debug: Kiểm tra OAuth2User
+            return ResponseEntity.status(403).body(null);
         }
         System.out.println("OAuth2User: " + oAuth2User);
         String email = oAuth2User.getAttribute("email");
         if (email == null) {
-            return ResponseEntity.status(403).body(null); // Debug: Kiểm tra email
+            return ResponseEntity.status(403).body(null);
         }
         Long userId = getUserIdFromEmail(email);
         ratingDTO.setUserId(userId);
@@ -89,7 +89,6 @@ public class RatingController {
         RatingDTO result = ratingService.updateComment(userId, recipeId, comment);
         return ResponseEntity.ok(result);
     }
-    // Lấy userId từ email
     private Long getUserIdFromEmail(String email) {
         return oAuth2UserService.getUserIdByEmail(email);
     }

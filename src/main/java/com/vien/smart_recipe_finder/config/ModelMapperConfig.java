@@ -19,13 +19,11 @@ public class ModelMapperConfig {
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
-        // Ánh xạ Recipes -> RecipeDTO
         modelMapper.typeMap(Recipes.class, RecipeDTO.class)
                 .addMappings(mapper ->
                         mapper.map(Recipes::getImage, (dest, value) -> dest.setImage((String) value))
                 );
 
-        // Ánh xạ RecipeIngredients -> RecipeIngredientDTO
         modelMapper.typeMap(RecipeIngredients.class, RecipeIngredientDTO.class)
                 .addMappings(mapper -> {
                     mapper.when(Objects::nonNull).map(src -> src.getIngredient().getId(), RecipeIngredientDTO::setIngredientId);
@@ -36,7 +34,6 @@ public class ModelMapperConfig {
                     mapper.map(RecipeIngredients::getQuantity, RecipeIngredientDTO::setQuantity);
                 });
 
-        // Ánh xạ RecipeSpices -> RecipeSpiceDTO
         modelMapper.typeMap(RecipeSpices.class, RecipeSpiceDTO.class)
                 .addMappings(mapper -> {
                     mapper.when(Objects::nonNull).map(src -> src.getSpice().getId(), RecipeSpiceDTO::setSpiceId);
@@ -44,7 +41,6 @@ public class ModelMapperConfig {
                     mapper.map(RecipeSpices::getQuantity, RecipeSpiceDTO::setQuantity);
                 });
 
-        // Ánh xạ History -> HistoryDTO
         modelMapper.typeMap(History.class, HistoryDTO.class)
                 .addMappings(mapper -> {
                     mapper.map(src -> src.getUser().getId(), HistoryDTO::setUserId);
@@ -56,7 +52,6 @@ public class ModelMapperConfig {
                 .setAmbiguityIgnored(true)
                 .setSkipNullEnabled(true);
 
-        // Cấu hình mapping cho Post
         modelMapper.createTypeMap(Post.class, PostDTO.class)
                 .addMappings(mapper -> {
                     mapper.skip(PostDTO::setLikeCount);

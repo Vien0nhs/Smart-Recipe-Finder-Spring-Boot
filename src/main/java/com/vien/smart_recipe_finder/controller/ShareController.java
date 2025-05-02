@@ -21,7 +21,7 @@ public class ShareController {
     @DeleteMapping("/post/{postId}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> unsharePost(@PathVariable Long postId) {
-        shareService.unsharePost(postId);
+        shareService.unSharePost(postId);
         return ResponseEntity.noContent().build();
     }
 }

@@ -1,5 +1,8 @@
 package com.vien.smart_recipe_finder.model;
 
+import lombok.Getter;
+
+@Getter
 public enum RecipeType {
     CANH("Canh"),
     KHO("Kho"),
@@ -13,7 +16,4 @@ public enum RecipeType {
         this.displayName = displayName;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
 }

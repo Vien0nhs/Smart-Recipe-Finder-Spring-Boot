@@ -29,7 +29,6 @@ public class ShareService {
     public void sharePost(Long postId) {
         logger.info("Sharing post ID: {}", postId);
         try {
-            // Kiểm tra trạng thái xác thực
             boolean isAuthenticated = SecurityContextHolder.getContext().getAuthentication() != null &&
                     SecurityContextHolder.getContext().getAuthentication().isAuthenticated() &&
                     !SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser");
@@ -45,7 +44,6 @@ public class ShareService {
             Post post = postRepository.findById(postId)
                     .orElseThrow(() -> new RuntimeException("Post not found: " + postId));
 
-            // Kiểm tra xem user đã share bài viết này chưa
             if (shareRepository.existsByUserIdAndPostId(user.getId(), postId)) {
                 logger.warn("User {} already shared post {}", user.getId(), postId);
                 throw new IllegalStateException("You have already shared this post");
@@ -57,7 +55,6 @@ public class ShareService {
             shareRepository.save(share);
             logger.info("Successfully shared post ID: {} by user ID: {}", postId, user.getId());
 
-            // Tạo thông báo cho chủ bài đăng
             if (!user.getId().equals(post.getUser().getId())) {
                 notificationService.createNotification(
                         postId,
@@ -73,7 +70,7 @@ public class ShareService {
     }
 
     @Transactional
-    public void unsharePost(Long postId) {
+    public void unSharePost(Long postId) {
         logger.info("Unsharing post ID: {}", postId);
         try {
             String email = SecurityContextHolder.getContext().getAuthentication().getName();

@@ -41,7 +41,6 @@ public class CommentPostService {
 
         commentRepository.save(comment);
 
-        // Tạo thông báo cho chủ bài đăng
         if (!user.getId().equals(post.getUser().getId())) {
             notificationService.createNotification(
                     postId,
@@ -82,7 +81,6 @@ public class CommentPostService {
         CommentPost comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new RuntimeException("Comment not found"));
 
-        // Kiểm tra xem user là chủ comment hoặc admin
         boolean isAdmin = userRepository.findAll().stream()
                 .anyMatch(u -> u.getEmail().equals(email) && u.getRole().equals("ROLE_ADMIN"));
         if (!comment.getUser().getId().equals(user.getId()) && !isAdmin) {
