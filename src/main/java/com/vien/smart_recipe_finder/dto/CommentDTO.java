@@ -9,4 +9,5 @@ public class CommentDTO {
     private String fullName;
     private String comment;
     private String email;
+    private Long ratingId; // Thêm trường này
 }

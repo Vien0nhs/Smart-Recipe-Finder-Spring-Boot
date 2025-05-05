@@ -92,4 +92,16 @@ public class RatingController {
     private Long getUserIdFromEmail(String email) {
         return oAuth2UserService.getUserIdByEmail(email);
     }
+    @DeleteMapping("/{recipeId}/comment/{ratingId}")
+    public ResponseEntity<Void> deleteCommentById(
+            @PathVariable Long recipeId,
+            @PathVariable Long ratingId,
+            @AuthenticationPrincipal OAuth2User oAuth2User) {
+        if (oAuth2User == null || oAuth2User.getAttribute("email") == null) {
+            return ResponseEntity.status(403).build();
+        }
+        Long userId = getUserIdFromEmail(oAuth2User.getAttribute("email"));
+        ratingService.deleteCommentById(userId, recipeId, ratingId);
+        return ResponseEntity.ok().build();
+    }
 }

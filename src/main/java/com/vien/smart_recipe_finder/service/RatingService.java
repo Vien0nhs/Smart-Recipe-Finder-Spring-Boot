@@ -74,7 +74,7 @@ public class RatingService {
         List<Rating> ratings = ratingRepository.findByRecipeId(recipeId);
         return ratings.stream()
                 .filter(r -> r.getComment() != null && !r.getComment().isEmpty())
-                .map(r -> new CommentDTO(r.getUser().getFullName(), r.getComment(), r.getUser().getEmail()))
+                .map(r -> new CommentDTO(r.getUser().getFullName(), r.getComment(), r.getUser().getEmail(), r.getId()))
                 .collect(Collectors.toList());
     }
     public void deleteComment(Long userId, Long recipeId) {
@@ -95,6 +95,26 @@ public class RatingService {
             ratingRepository.delete(rating);
         } else {
             throw new RuntimeException("Unauthorized to delete this comment");
+        }
+    }
+    public void deleteCommentById(Long userId, Long recipeId, Long ratingId) {
+        Rating rating = ratingRepository.findById(ratingId)
+                .orElseThrow(() -> new IllegalArgumentException("Rating not found"));
+
+        if (!rating.getRecipe().getId().equals(recipeId)) {
+            throw new IllegalArgumentException("Rating does not belong to this recipe");
+        }
+
+        User commentOwner = rating.getUser();
+        User currentUser = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Current user not found"));
+
+        boolean isAdmin = "ROLE_ADMIN".equals(currentUser.getRole());
+
+        if (isAdmin || Objects.equals(commentOwner.getId(), currentUser.getId())) {
+            ratingRepository.delete(rating);
+        } else {
+            throw new RuntimeException("Không có quyền xóa bình luận này");
         }
     }
 

@@ -1,10 +1,13 @@
 package com.vien.smart_recipe_finder.controller;
 
+import com.vien.smart_recipe_finder.dto.CreatePostRequest;
 import com.vien.smart_recipe_finder.dto.PostDTO;
 import com.vien.smart_recipe_finder.dto.PostImageDTO;
+import com.vien.smart_recipe_finder.dto.UpdatePostRequest;
 import com.vien.smart_recipe_finder.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -22,18 +25,15 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<PostDTO> createPost(
-            @RequestParam("content") String content,
-            @RequestParam(value = "images", required = false) List<MultipartFile> images,
-            @RequestParam(value = "tags", required = false) List<String> tags
-    ) {
-        System.out.println("Received content: " + content);
-        System.out.println("Received images: " + (images != null ? images.size() : 0));
-        System.out.println("Received tags: " + (tags != null ? tags : "none"));
+    public ResponseEntity<PostDTO> createPost(@ModelAttribute CreatePostRequest request) {
         try {
-            PostDTO post = postService.createPost(content, images, tags);
+            PostDTO post = postService.createPost(
+                    request.getContent(),
+                    request.getImages(),
+                    request.getTags()
+            );
             return ResponseEntity.ok(post);
         } catch (Exception e) {
             System.err.println("Error creating post: " + e.getMessage());
@@ -41,17 +41,21 @@ public class PostController {
         }
     }
 
-    @PutMapping("/{postId}")
-    @PreAuthorize("hasRole('USER')")
+
+    @PutMapping(value = "/{postId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<PostDTO> updatePost(
             @PathVariable Long postId,
-            @RequestParam("content") String content,
-            @RequestParam(value = "images", required = false) List<MultipartFile> images,
-            @RequestParam(value = "tags", required = false) List<String> tags
-    ) {
+            @ModelAttribute UpdatePostRequest request
+    )
+    {
         System.out.println("Updating post ID: " + postId);
         try {
-            PostDTO post = postService.updatePost(postId, content, images, tags);
+            PostDTO post = postService.updatePost(
+                    postId,
+                    request.getContent(),
+                    request.getImages(),
+                    request.getTags()
+            );
             return ResponseEntity.ok(post);
         } catch (Exception e) {
             System.err.println("Error updating post: " + e.getMessage());
